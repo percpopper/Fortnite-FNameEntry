@@ -56,11 +56,11 @@ void DecryptNonWide(FNameEntry* Entry, char* OutName)
 
 	memcpy(OutName, Entry + Entry->GetDataOffset(), NameLength);
 
-	v5 = *(unsigned int*)(BaseAddress + 0xEC70DD0) >> 5;
+	v5 = *(unsigned int*)(BaseAddress + 0xEC6EEB0);
 
 	v6 = (v5 << 8) | (v5 >> 8);
 
-	v7 = v5 >> 11;
+	v7 = v5 >> 7;
 
 	if (NameLength)
 	{
