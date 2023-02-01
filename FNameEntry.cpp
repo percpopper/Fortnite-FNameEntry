@@ -43,12 +43,12 @@ public:
 
 void DecryptNonWide(FNameEntry* Entry, char* OutName)
 {
-	char* v2; // rbx
-	unsigned int NameLength; // edi
-	unsigned int v5; // eax
-	int v6; // edx
-	unsigned int v7; // r8d
-	__int64 v8; // rax
+	char* v2; // rdi
+	int NameLength; // ebx
+	int v5; // edx
+	__int64 result; // rax
+	int v7; // eax
+	char v8; // cl
 
 	v2 = OutName;
 
@@ -56,32 +56,30 @@ void DecryptNonWide(FNameEntry* Entry, char* OutName)
 
 	memcpy(OutName, Entry + Entry->GetDataOffset(), NameLength);
 
-	v5 = *(unsigned int*)(BaseAddress + 0xEC6EEB0);
-
-	v6 = (v5 << 8) | (v5 >> 8);
-
-	v7 = v5 >> 7;
-
+	v5 = 0;
+	result = 42i64;
 	if (NameLength)
 	{
-		v8 = NameLength;
 		do
 		{
-			v6 += v7;
-			*v2++ ^= v6;
-			--v8;
-		} while (v8);
+			v7 = v5 | result;
+			++v2;
+			++v5;
+			v8 = ~(_BYTE)v7;
+			result = (unsigned int)(2 * v7);
+			*(v2 - 1) ^= v8;
+		} while (v5 < NameLength);
 	}
 }
 
-void DecryptWide(FNameEntry* Entry, char* OutName)
+void DecryptWide(FNameEntry* Entry, wchar* OutName)
 {
-	char* v2; // rdi
-	unsigned int NameLength; // ebx
-	unsigned int v5; // eax
-	int v6; // edx
-	unsigned int v7; // r8d
-	__int64 v8; // rax
+	wchar* v2; // rdi
+	int NameLength; // ebx
+	int v5; // edx
+	__int64 result; // rax
+	int v7; // eax
+	char v8; // cl
 
 	v2 = OutName;
 
@@ -89,20 +87,16 @@ void DecryptWide(FNameEntry* Entry, char* OutName)
 
 	memcpy(OutName, Entry + Entry->GetDataOffset(), 2 * NameLength);
 
-	v5 = *(unsigned int*)(BaseAddress + 0xEC6EEB0);
-
-	v6 = (v5 << 8) | (v5 >> 8);
-
-	v7 = v5 >> 7;
-
+	v5 = 0;
+	result = 42i64;
 	if (NameLength)
 	{
-		v8 = NameLength;
 		do
 		{
-			v6 += v7;
-			*v2++ ^= v6;
-			--v8;
-		} while (v8);
+		      v7 = v5++ | result;
+		      v8 = v7;
+		      result = 2 * v7;
+		      *v2++ ^= ~v8;
+		} while (v5 < NameLength);
 	}
 }
